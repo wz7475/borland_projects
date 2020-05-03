@@ -1,0 +1,59 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#include <fstream>
+#pragma hdrstop
+using namespace std;
+#include "Unit1.h"
+#include "Unit2.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm1 *Form1;
+
+//---------------------------------------------------------------------------
+__fastcall TForm1::TForm1(TComponent* Owner)
+        : TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::Button3Click(TObject *Sender)
+{
+        AnsiString command="python.exe web_map\\runner_online.py";
+        system(command.c_str());
+        system("exit()");
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::Button2Click(TObject *Sender)
+{
+        Form2->ShowModal();
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::Button1Click(TObject *Sender)
+{
+        fstream plik;
+        AnsiString text = Edit1->Text;
+        plik.open("web_map\\data\\places.txt", ios::out | ios::app);
+        plik<<text.c_str()<<endl;
+        plik.close();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::FormClose(TObject *Sender, TCloseAction &Action)
+{
+        if(Application->MessageBox("Czy na pewno zakoñczyæ program?",
+                "PotwierdŸ", MB_YESNO | MB_ICONQUESTION) == IDNO)
+                {
+                        Action=caNone;
+                }        
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::Button4Click(TObject *Sender)
+{
+        AnsiString command="python.exe web_map\\runner_offline.py";
+        system(command.c_str());
+        system("exit()");
+}
+//---------------------------------------------------------------------------
+

@@ -1,0 +1,66 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#include <fstream>
+#pragma hdrstop
+using namespace std;
+#include "Unit1.h"
+#include "Unit2.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm1 *Form1;
+fstream plik;
+//---------------------------------------------------------------------------
+__fastcall TForm1::TForm1(TComponent* Owner)
+        : TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::Button3Click(TObject *Sender)
+{
+        AnsiString command="python.exe runner.py";
+        system(command.c_str());
+        system("exit()");
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::Button2Click(TObject *Sender)
+{
+        Form2->ShowModal();
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::Button1Click(TObject *Sender)
+{
+        bool begining = true;
+        AnsiString text1 = Edit1->Text;
+        AnsiString key = "http";
+        for(int i=0; i<4; i++)
+        {
+                if(key[i] != text1[i])
+                {
+                        begining = false;
+                        break;
+
+                }
+
+        }
+        if(begining)
+                AnsiString text = Edit1->Text;
+        else
+                AnsiString text = "http://"+ Edit1->Text;
+        plik.open("linki.txt", ios::out | ios::app);
+        plik<<text.c_str()<<endl;
+        plik.close();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::FormClose(TObject *Sender, TCloseAction &Action)
+{
+        if(Application->MessageBox("Czy na pewno zako�czy� program?",
+                "Potwierd�", MB_YESNO | MB_ICONQUESTION) == IDNO)
+                {
+                        Action=caNone;
+                }        
+}
+//---------------------------------------------------------------------------
+
